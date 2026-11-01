@@ -1,0 +1,25 @@
+{
+  "schema": "public_path_indicators/v1",
+  "indicators": [
+    {
+      "vendor": "Sangfor",
+      "product": "AF",
+      "path": "/directdata/direct/router",
+      "method": "POST",
+      "parameters": ["action"],
+      "response_markers": ["directdata"],
+      "reference": "operator-provided public-path review record",
+      "evidence_ref": "spec:M8.2:directdata-router"
+    },
+    {
+      "vendor": "Sangfor",
+      "product": "AF",
+      "path": "/LogInOut.php",
+      "method": "POST",
+      "parameters": ["type"],
+      "response_markers": ["LogInOut"],
+      "reference": "operator-provided public-path review record",
+      "evidence_ref": "spec:M8.2:loginout"
+    }
+  ]
+}

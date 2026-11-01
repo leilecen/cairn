@@ -1,0 +1,74 @@
+[
+  {
+    "id": "fresh_init",
+    "level": "L0",
+    "entrypoint": "db_admin.py init --target --slug --domain",
+    "consumer": "init_scan baseline",
+    "fresh_db_test": "test_db_admin_init.py::test_fresh_explicit_init_creates_v45_schema_without_runtime_rows",
+    "boundary_test": "test_db_admin_init.py::test_repeat_init_is_idempotent_for_explicit_root_asset"
+  },
+  {
+    "id": "baseline",
+    "level": "L0",
+    "entrypoint": "init_scan.py --target --db --baseline",
+    "consumer": "v3_chain",
+    "fresh_db_test": "test_init_scan_baseline.py::test_baseline_scans_only_authorized_assets_and_has_no_deep_side_effects",
+    "boundary_test": "test_init_scan_baseline.py::test_baseline_without_authorized_assets_is_blocked_not_succeeded"
+  },
+  {
+    "id": "source_intel",
+    "level": "L0",
+    "entrypoint": "recon_intel.py --target --db <one source>",
+    "consumer": "recon_runs and human_brief",
+    "fresh_db_test": "test_source_intel_adapters.py::test_subfinder_cli_records_resumable_adapter_run",
+    "boundary_test": "test_source_intel_adapters.py::test_subfinder_candidates_stay_review_only_and_are_root_bounded"
+  },
+  {
+    "id": "ct_search",
+    "level": "L0",
+    "entrypoint": "ct_search.py --target --db --domain",
+    "consumer": "recon_runs and review candidates",
+    "fresh_db_test": "test_ct_search.py::test_sslmate_cli_records_observed_result_and_resume_cursor",
+    "boundary_test": "test_ct_search.py::test_sslmate_cli_rejects_target_not_in_explicit_db_before_query"
+  },
+  {
+    "id": "candidate_brief",
+    "level": "L0",
+    "entrypoint": "human_brief.py --target --db --json",
+    "consumer": "operator and Warroom",
+    "fresh_db_test": "test_human_brief.py::test_human_brief_cli_is_read_only_and_echoes_explicit_db",
+    "boundary_test": "test_human_brief.py::test_human_brief_without_focus_does_not_guess"
+  },
+  {
+    "id": "recon_plan",
+    "level": "L0",
+    "entrypoint": "recon_plan.py --target --db [--execute <one slice> --domain <root>]",
+    "consumer": "operator small-slice choice",
+    "fresh_db_test": "test_recon_plan.py::test_plan_is_read_only_and_recommends_small_passive_slices",
+    "boundary_test": "test_recon_plan.py::test_execute_rejects_unapproved_domain_before_subprocess"
+  },
+  {
+    "id": "insight_accept",
+    "level": "L3",
+    "entrypoint": "insight_capture.py --target --db accept",
+    "consumer": "same-system validation work item",
+    "fresh_db_test": "test_insight_capture.py::test_accept_proposal_creates_same_system_queued_insight_and_safe_validation_work_item",
+    "boundary_test": "test_insight_capture.py::test_accept_proposal_rejects_unsafe_or_stale_input_without_writes"
+  },
+  {
+    "id": "experience_harvest",
+    "level": "operator",
+    "entrypoint": "experience_store.py --target --db harvest",
+    "consumer": "experience_entries",
+    "fresh_db_test": "test_experience_store.py::test_harvest_is_atomic_and_bidirectionally_traceable",
+    "boundary_test": "test_experience_store.py::test_harvest_rejects_non_terminal_insight_without_creating_entry"
+  },
+  {
+    "id": "experience_reuse",
+    "level": "L3",
+    "entrypoint": "experience_store.py --target --db search|bump|effect",
+    "consumer": "focused main-session plan",
+    "fresh_db_test": "test_experience_store.py::test_l3_experience_lookup_and_adoption_require_active_operator_focus",
+    "boundary_test": "test_experience_store.py::test_l3_effectiveness_requires_terminal_evidence"
+  }
+]

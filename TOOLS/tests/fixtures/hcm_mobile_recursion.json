@@ -1,0 +1,59 @@
+{
+  "seed": {
+    "url": "https://hcm.example.test/Mobile/",
+    "source_kind": "html",
+    "evidence_refs": ["pages:mobile-1"],
+    "depth": 0
+  },
+  "observations": [
+    {
+      "parent_url": "https://hcm.example.test/Mobile/",
+      "url": "https://hcm.example.test/Mobile/js/app.bundle.js#boot",
+      "source_kind": "html",
+      "kind": "js",
+      "evidence_refs": ["js_files:hcm-mobile-app"],
+      "depth": 1,
+      "observed": true
+    },
+    {
+      "parent_url": "https://hcm.example.test/Mobile/js/app.bundle.js",
+      "url": "https://hcm.example.test/Mobile/AppBaseApi/GetBMData?TableName=",
+      "source_kind": "js",
+      "kind": "endpoint",
+      "method": "GET",
+      "parameter_names": ["TableName"],
+      "evidence_refs": ["js_signals:hcm-getbmdata"],
+      "depth": 2,
+      "observed": true
+    },
+    {
+      "parent_url": "https://hcm.example.test/Mobile/",
+      "url": "https://hcm.example.test/Mobile/not-found.js",
+      "source_kind": "html",
+      "kind": "js",
+      "response_class": "soft_404",
+      "evidence_refs": ["pages:soft404-1"],
+      "depth": 1,
+      "observed": true
+    },
+    {
+      "parent_url": "https://hcm.example.test/Mobile/js/app.bundle.js",
+      "url": "https://hcm.example.test/Mobile/js/chunk-987.js",
+      "source_kind": "js",
+      "kind": "js",
+      "guessed": true,
+      "evidence_refs": ["js_files:guess-1"],
+      "depth": 2,
+      "observed": false
+    },
+    {
+      "parent_url": "https://hcm.example.test/Mobile/",
+      "url": "https://cdn.other.test/vendor.js",
+      "source_kind": "html",
+      "kind": "js",
+      "evidence_refs": ["js_files:external-1"],
+      "depth": 1,
+      "observed": true
+    }
+  ]
+}

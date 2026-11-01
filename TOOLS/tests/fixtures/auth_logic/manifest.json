@@ -1,0 +1,10 @@
+{
+  "existence_check:test": "checkOnlyUser_exists",
+  "existence_check:control": "checkOnlyUser_control",
+  "phone_login:/sys/phoneLogin": "phone_login",
+  "register:/api/gateway/example-authority/sys/user/register": "user_register",
+  "sms_send:/sys/sms": "sms_send",
+  "qrcode_login:/sys/getLoginQrcode": "login_qrcode",
+  "permission:/sys/permission/getPermCode": "permission_permcode",
+  "third_party:/sys/third/user/create": "third_user_create"
+}

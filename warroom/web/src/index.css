@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+/* ============================================================
+ * 设计 token —— DeepSeek 深色模式风格（2026-08-15）
+ * 底色 #0e1116 / 卡片 #1a1d23 / 品牌蓝 #4d6bfe / 大圆角
+ * surface = 层级背景 / edge = 边框 / ink = 文字 / 语义色见 colors.ts
+ * ============================================================ */
+@theme {
+  --color-surface: #0e1116;      /* 页面底色 */
+  --color-surface-2: #1a1d23;    /* 卡片/面板 */
+  --color-surface-3: #23272f;    /* 输入框/次级面板 */
+  --color-surface-4: #2e333d;    /* hover/按钮 */
+  --color-edge: #262a32;         /* 分隔线 */
+  --color-edge-2: #333947;       /* 强边框 */
+  --color-ink: #e6e8eb;          /* 正文 */
+  --color-ink-dim: #9ca3af;      /* 次要文字 */
+  --color-ink-bright: #ffffff;   /* 高亮文字 */
+  --color-accent: #4d6bfe;       /* DeepSeek 品牌蓝 */
+  --color-accent-soft: #6c8cff;  /* 链接蓝 */
+  --color-ok: #3fb68b;           /* 成功绿 */
+  --color-warn: #d9a53f;         /* 警告黄 */
+  --color-danger: #f0534d;       /* 危险红 */
+  --color-info: #5b8def;         /* 信息蓝 */
+  --color-violet: #8b7cf6;       /* 紫 */
+
+  --font-ui: "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+  --font-mono: "Cascadia Code", "Consolas", "JetBrains Mono", monospace;
+}
+
+@layer base {
+  * { box-sizing: border-box; }
+
+  html, body, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    @apply bg-surface text-ink font-ui text-[13px] antialiased;
+  }
+
+  button { font-family: inherit; }
+
+  select {
+    @apply bg-surface-3 text-ink border border-edge-2 rounded-lg px-2.5 py-1.5 text-xs font-ui;
+  }
+  select:focus { outline: 2px solid var(--color-accent); outline-offset: -1px; }
+
+  /* 滚动条：细、低存在感 */
+  ::-webkit-scrollbar { width: 9px; height: 9px; }
+  ::-webkit-scrollbar-thumb { background: #3a4150; border-radius: 5px; }
+  ::-webkit-scrollbar-thumb:hover { background: #4a5264; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-corner { background: transparent; }
+}
+
+/* 通用小工具类 */
+.mono { font-family: var(--font-mono); }
+.dim { color: var(--color-ink-dim); }

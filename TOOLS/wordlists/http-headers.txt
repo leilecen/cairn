@@ -1,0 +1,81 @@
+# Security-relevant HTTP headers for x8 header fuzzing
+# Focus: IP spoofing, host override, path bypass, auth bypass, cache poisoning
+
+# IP / Client spoofing
+X-Forwarded-For
+X-Real-IP
+X-Originating-IP
+X-Remote-IP
+X-Remote-Addr
+X-Client-IP
+X-Cluster-Client-IP
+True-Client-IP
+CF-Connecting-IP
+X-ProxyUser-Ip
+Forwarded
+
+# Host override (Host header injection / cache poisoning)
+X-Forwarded-Host
+X-Host
+X-Original-Host
+X-Forwarded-Server
+X-Forwarded-Proto
+X-Forwarded-Port
+X-Forwarded-SSL
+
+# URL / path rewrite bypass
+X-Original-URL
+X-Rewrite-URL
+X-Override-URL
+X-Forwarded-URL
+X-HTTP-Method-Override
+X-Method-Override
+X-Requested-With
+
+# Access control bypass
+X-Custom-IP-Authorization
+X-Internal-IP
+X-Internal
+X-Bypass-Proxy
+X-Admin
+X-Backend
+X-Backend-Server
+
+# Auth / API keys
+Authorization
+X-API-Key
+X-Auth-Token
+X-Access-Token
+X-Service-Token
+X-Auth-Request-User
+X-User
+X-User-ID
+X-User-Email
+
+# Debug / tracing
+X-Debug
+X-Debug-Mode
+X-Debug-Token
+X-Request-ID
+X-Correlation-ID
+X-Trace-ID
+X-B3-TraceId
+
+# Cache / CDN
+X-Cache-Key
+X-Amz-Cf-Id
+X-Cache-Status
+X-Varnish
+X-Cache
+
+# CORS
+Origin
+Access-Control-Request-Headers
+Access-Control-Request-Method
+
+# Misc
+X-Wap-Profile
+Proxy-Authorization
+Proxy-Host
+X-Request-Start
+X-Queue-Start

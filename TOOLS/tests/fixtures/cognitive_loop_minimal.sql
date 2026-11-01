@@ -1,0 +1,13 @@
+CREATE TABLE schema_version(version INTEGER PRIMARY KEY, description TEXT);
+INSERT INTO schema_version VALUES (31,'fixture');
+CREATE TABLE endpoint_observations(id INTEGER PRIMARY KEY,target_name TEXT,canonical_url TEXT,method TEXT,source TEXT,auth_state TEXT,response_class TEXT,status_code INTEGER,evidence_refs_json TEXT);
+CREATE TABLE entry_observations(id INTEGER PRIMARY KEY,target_name TEXT,url TEXT,response_class TEXT,status_code INTEGER,evidence_refs_json TEXT);
+CREATE TABLE work_items(id INTEGER PRIMARY KEY,target_name TEXT,lane TEXT,status TEXT,dispatch_state TEXT DEFAULT 'active');
+CREATE TABLE evidence_refs(id INTEGER PRIMARY KEY,target_name TEXT);
+CREATE TABLE soft_targets(id INTEGER PRIMARY KEY);
+CREATE TABLE attack_threads(id INTEGER PRIMARY KEY,target_name TEXT,hypothesis TEXT,status TEXT);
+INSERT INTO endpoint_observations VALUES(1,'demo','https://demo/api','GET','fixture','public','public',200,'["ev-1"]');
+INSERT INTO endpoint_observations VALUES(2,'demo','https://demo/unknown','GET','fixture','ok_unknown','ok_unknown',NULL,'[]');
+INSERT INTO entry_observations VALUES(1,'demo','https://demo/login','login_like',200,'["ev-2"]');
+INSERT INTO entry_observations VALUES(2,'demo','https://demo/admin','observed',NULL,'[]');
+INSERT INTO work_items VALUES(1,'demo','asset_triage','queued','active');

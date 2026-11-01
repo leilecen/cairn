@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "retire": "^5.4.3",
+    "webcrack": "^2.16.0"
+  }
+}

@@ -1,0 +1,57 @@
+# 提交门禁。2026-10-17 起 ruff / ruff-format / mypy 全部为 0，提交不再需要 --no-verify。
+#
+# 三个检查与手工命令完全一致：
+#   ruff check TOOLS            -> 0
+#   ruff format --check TOOLS   -> 0 drift
+#   python -m mypy TOOLS        -> Success（TOOLS/codeql 为第三方解包，已在 pyproject 里排除）
+#
+# 技能/agent 镜像是生成物（.agents/ 为真源），漂移必须当场发现，否则会出现
+# "改了真源但 harness 还在用旧副本"。
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.15
+    hooks:
+      - id: ruff
+        args: [--fix]
+        files: ^TOOLS/.*\.py$
+      - id: ruff-format
+        files: ^TOOLS/.*\.py$
+  # 注意：mypy 的 hook 必须"整树跑一次"，不能用 pre-commit 默认的"只传改动文件"。
+  # 只传单文件时 mypy 看不到 pyproject 里的 exclude/配置组合，报错集合与
+  # `python -m mypy TOOLS` 不一致（实测：整树 0 error，逐文件反而 12 error）。
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    # 与 .venv 里手工验证的版本对齐（2.4.0）。之前钉 v1.15.0：那个版本对整个仓库
+    # 报 0 error，却会在单文件调用下报 v3_chain 的 9 个 error —— 门禁口径必须和
+    # 开发者本地 `python -m mypy TOOLS` 完全一致，否则"本地绿、提交红"。
+    rev: v2.4.0
+    hooks:
+      - id: mypy
+        args: [--ignore-missing-imports, TOOLS]
+        files: ^TOOLS/.*\.py$
+        exclude: ^TOOLS/ad-hoc/
+        pass_filenames: false
+        verbose: true
+  - repo: local
+    hooks:
+      - id: skills-mirror-in-sync
+        name: sync_skills.py --check（技能镜像无漂移）
+  # 用 venv 解释器的绝对路径：本机没有全局 python（AGENTS.md 硬约束 4），
+  # 写裸 `python` 会让 hook 报 "Executable `python` not found" 而手工跑却通过。
+        entry: .venv/Scripts/python.exe scripts/sync_skills.py --check
+        language: system
+        pass_filenames: false
+        files: ^(\.agents/skills/|scripts/sync_skills\.py)
+      - id: agents-mirror-in-sync
+        name: sync_agents.py --check（agent 镜像无漂移）
+        entry: .venv/Scripts/python.exe scripts/sync_agents.py --check
+        language: system
+        pass_filenames: false
+        files: ^(\.agents/agents/|scripts/sync_agents\.py)
+      # 索引号称"真源入口"，说谎的代价是后来者按错误地图找代码（缺口 6）
+      - id: doc-index-in-sync
+        name: check_doc_index.py（docs/INDEX.md 与实际结构一致）
+        entry: .venv/Scripts/python.exe scripts/check_doc_index.py
+        language: system
+        pass_filenames: false
+        files: ^(docs/.*\.md|TOOLS/.*|scripts/check_doc_index\.py)$
+        exclude: ^TOOLS/(legacy|codeql|bin|js-tools|android.*)/

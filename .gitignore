@@ -1,0 +1,95 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Cairn 公开仓库的 .gitignore
+#
+# 这个仓库刻意只保留「框架本体」。下面被忽略的路径要么是运行产物、要么是私有
+# 知识库 / 内部运维文档，它们不随公开仓库分发，也不应该被提交。
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ── Python ──
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# ── Node / 前端构建产物 ──
+node_modules/
+warroom/web/dist/
+warroom/dsh-plugin/lib/
+*.tsbuildinfo
+
+# ── 凭据与本机配置 ──
+.env
+.env.*
+!.env.example
+cookies.txt
+*cookies*.txt
+login_body.json
+captcha.jpg
+*.har
+.mcp.json
+opencode.json
+AGENTS.md
+CLAUDE.md
+
+# ── 运行产物：逐目标事实库、交付物、原始流量 ──
+dbs/
+reports/
+res/
+outs/
+output/
+logs/
+metrics/
+tmp/
+local/
+strix_runs/
+.session-log.jsonl
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+*.xlsx
+*.docx
+
+# ── 私有知识库与内部运维文档（单独维护，不公开）──
+.agents/
+.claude/
+.codex/
+.opencode/
+.codegraph/
+.dsh/
+.hermes/
+.reasonix/
+.freebuff/
+.workbuddy/
+.browser-profile/
+.playwright-mcp/
+.jython_cache/
+docs/absorption/
+docs/archive/
+docs/HANDOFF.md
+docs/INDEX.md
+docker/
+rules/*.txt
+
+# ── 按目录维护的本地字典 / 第三方整包 ──
+TOOLS/android/
+TOOLS/android-re/
+TOOLS/bin/
+TOOLS/codeql/
+TOOLS/dicts/
+TOOLS/legacy/
+TOOLS/js-tools/node_modules/
+scrapling/
+
+# ── 编辑器 / 系统 ──
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+hs_err_pid*.log
+replay_pid*.log

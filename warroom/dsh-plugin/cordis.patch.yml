@@ -1,0 +1,11 @@
+# warroom-dashboard 组合包 patch（bundle patch）
+#
+# 被 profile 的 package.json → dsh.profile.bundles 选中时，本文件作为该组合包的一层生效：
+# 插入 warroom-dashboard 这条 loader 行（host 半 = lib/index.js；client 半由 dsh.client 声明提供）。
+#
+# 注意：同一个 profile 里不要同时用「本 patch」和「profile 自己的 cordis.patch.yml 里手写的
+# 同名 insert 行」——那会让同一 id 出现两次。desktop 用组合包机制；web 目前用 profile patch，
+# 二选一。
+- insert:
+    - id: warroom-dashboard
+      name: 'warroom-dashboard'

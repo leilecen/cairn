@@ -1,0 +1,4 @@
+# Force text diff for all agent markdown specs — git's default
+# binary heuristic occasionally misfires on UTF-8-heavy Chinese docs.
+.codex/agents/*.md text diff
+.claude/agents/*.md text diff

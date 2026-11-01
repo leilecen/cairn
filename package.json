@@ -1,0 +1,12 @@
+{
+  "name": "cairn",
+  "private": true,
+  "devDependencies": {
+    "@playwright/test": "^1.60.0"
+  },
+  "dependencies": {
+    "crypto-js": "^4.2.0",
+    "docx": "^9.7.1",
+    "playwright": "^1.48.2"
+  }
+}

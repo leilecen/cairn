@@ -1,0 +1,271 @@
+{
+  "families": [
+    {
+      "auth_requirement": "optional",
+      "auto_dispatchable": true,
+      "category": "exposure_boundary",
+      "gate_triggers": [
+        "accessible sensitive file content",
+        "bulk directory enumeration"
+      ],
+      "key": "bbzl_oss",
+      "level": "L1_LOW_RISK",
+      "risk_class": "safe_passive",
+      "safe_actions": [
+        "HEAD-only low-frequency checks (>=2s interval)",
+        "reuse already-known OSS path formats",
+        "never download file bodies"
+      ],
+      "signals": [
+        "oss",
+        "object_storage",
+        "path_predictability",
+        "directory_oracle"
+      ],
+      "summary": "Low-volume HEAD probes for OSS path predictability: confirm YYYY-MM/random-name layout, check common sensitive filenames, and map which monthly directories exist via 403/404 oracle.",
+      "title": "OSS object-storage path predictability probe"
+    },
+    {
+      "auth_requirement": "optional",
+      "auto_dispatchable": true,
+      "category": "input_boundary",
+      "gate_triggers": [],
+      "key": "input_error_diff",
+      "level": "L1_LOW_RISK",
+      "risk_class": "safe_replay",
+      "safe_actions": [
+        "single benign replay per selected endpoint",
+        "semantic response summary only"
+      ],
+      "signals": [
+        "input_type",
+        "quote_escape",
+        "error_diff",
+        "status_diff"
+      ],
+      "summary": "Compare benign boundary values for input type, quote escaping, parser errors, and status/body-shape deltas.",
+      "title": "Input encoding and error-difference probe"
+    },
+    {
+      "auth_requirement": "optional",
+      "auto_dispatchable": true,
+      "category": "protocol_boundary",
+      "gate_triggers": [],
+      "key": "method_content_type_auth_headers",
+      "level": "L1_LOW_RISK",
+      "risk_class": "safe_replay",
+      "safe_actions": [
+        "GET/HEAD/OPTIONS or dry-run equivalent only",
+        "do not attempt privileged actions"
+      ],
+      "signals": [
+        "method",
+        "content_type",
+        "auth_header_presence",
+        "options_allow"
+      ],
+      "summary": "Check non-mutating method handling, content-type mismatch, missing auth-header shape, and safe OPTIONS metadata.",
+      "title": "Method, Content-Type, and auth-header boundary probe"
+    },
+    {
+      "auth_requirement": "optional",
+      "auto_dispatchable": true,
+      "category": "state_boundary",
+      "gate_triggers": [
+        "cross-account object access",
+        "state transition",
+        "duplicate order/payment/action"
+      ],
+      "key": "id_state_replay_shape",
+      "level": "L1_LOW_RISK",
+      "risk_class": "safe_replay",
+      "safe_actions": [
+        "metadata comparison only",
+        "no cross-user object reads without explicit gate"
+      ],
+      "signals": [
+        "id_shape",
+        "status_field",
+        "duplicate_submit_hint",
+        "idempotency_hint"
+      ],
+      "summary": "Look for ID/status/retry hints using known benign requests; block before reading sensitive records or changing state.",
+      "title": "ID, state, and duplicate-submit shape probe"
+    },
+    {
+      "auth_requirement": "none",
+      "auto_dispatchable": true,
+      "category": "trust_boundary",
+      "gate_triggers": [],
+      "key": "cors_origin_host",
+      "level": "L1_LOW_RISK",
+      "risk_class": "safe_replay",
+      "safe_actions": [
+        "header-only response summary",
+        "no browser credentialed exploit flow"
+      ],
+      "signals": [
+        "cors",
+        "origin",
+        "host",
+        "cache_vary"
+      ],
+      "summary": "Inspect CORS/Origin/Host response metadata with benign origins and no credential exfiltration.",
+      "title": "CORS, Origin, and Host trust-boundary probe"
+    },
+    {
+      "auth_requirement": "optional",
+      "auto_dispatchable": true,
+      "category": "exposure_boundary",
+      "gate_triggers": [
+        "sensitive file read",
+        "bulk export",
+        "private config content"
+      ],
+      "key": "file_export_debug_config_discovery",
+      "level": "L1_LOW_RISK",
+      "risk_class": "safe_passive",
+      "safe_actions": [
+        "reuse known endpoints",
+        "do not enumerate paths aggressively"
+      ],
+      "signals": [
+        "file",
+        "export",
+        "debug",
+        "config",
+        "download"
+      ],
+      "summary": "Plan low-volume discovery for file/export/debug/config signals already present in collected URLs or summaries.",
+      "title": "File, export, debug, and config exposure discovery"
+    },
+    {
+      "auth_requirement": "none",
+      "auto_dispatchable": true,
+      "category": "exposure_boundary",
+      "gate_triggers": [
+        "accessible sensitive file content",
+        "path traversal signal",
+        "bulk enumeration"
+      ],
+      "key": "filedownload-notoken-shape",
+      "level": "L1_LOW_RISK",
+      "risk_class": "safe_passive",
+      "safe_actions": [
+        "single low-frequency benign requests (>=2s interval)",
+        "param-name/method/Content-Type shape variants only",
+        "never fetch real file bodies or enumerate directories"
+      ],
+      "signals": [
+        "noToken",
+        "file_download",
+        "param_shape",
+        "response_shape",
+        "gate_bypass"
+      ],
+      "summary": "Low-volume shape probe on a gateway noToken whitelist fileDownload endpoint: param-name enumeration, method and Content-Type variants, response-shape differences (empty body/error/redirect/Content-Disposition). No real file reads.",
+      "title": "noToken whitelist file-download shape probe"
+    },
+    {
+      "auth_requirement": "none",
+      "auto_dispatchable": true,
+      "category": "auth_boundary",
+      "gate_triggers": [
+        "credential attempt or account enumeration signal",
+        "auth boundary or lockout impact"
+      ],
+      "key": "auth2-login-shape",
+      "level": "L1_LOW_RISK",
+      "risk_class": "safe_passive",
+      "safe_actions": [
+        "single low-frequency benign requests (>=2s interval)",
+        "param-name/value-type/Content-Type shape variants only",
+        "never attempt credentials, weak passwords, or enumeration"
+      ],
+      "signals": [
+        "auth2",
+        "login_shape",
+        "json_type_juggling",
+        "param_shape",
+        "response_shape"
+      ],
+      "summary": "Low-volume shape probe on an external (outer) login endpoint: JSON type-juggling, parameter-name and Content-Type variants, root non-object/batch/malformed shapes, and response-shape differences. No credential enumeration, guessing, or brute force.",
+      "title": "External auth2 login endpoint shape probe"
+    },
+    {
+      "auth_requirement": "optional",
+      "auto_dispatchable": true,
+      "category": "api_surface",
+      "gate_triggers": [
+        "GraphQL introspection against restricted endpoint",
+        "source map contains secrets"
+      ],
+      "key": "api_graphql_swagger_sourcemap",
+      "level": "L1_LOW_RISK",
+      "risk_class": "safe_passive",
+      "safe_actions": [
+        "metadata fetch only",
+        "schema/introspection requires local rules and operator gate if target policy is unclear"
+      ],
+      "signals": [
+        "api_prefix",
+        "graphql",
+        "swagger",
+        "openapi",
+        "source_map",
+        "chunk"
+      ],
+      "summary": "Check whether already discovered API docs, GraphQL endpoints, Swagger, source maps, or chunks need scoped follow-up.",
+      "title": "API, GraphQL, Swagger, and source-map surface probe"
+    },
+    {
+      "auth_requirement": "required",
+      "auto_dispatchable": false,
+      "category": "auth_boundary",
+      "gate_triggers": [
+        "weak credential attempt",
+        "authentication boundary",
+        "rate/lockout impact"
+      ],
+      "key": "weak_password_or_auth_boundary",
+      "level": "L4_HIGH_RISK",
+      "risk_class": "high_risk",
+      "safe_actions": [],
+      "signals": [
+        "weak_password",
+        "bruteforce",
+        "lockout",
+        "mfa",
+        "role_boundary"
+      ],
+      "summary": "Any weak password, brute force, lockout, MFA, or account-boundary test requires operator approval.",
+      "title": "Weak-password or authentication-boundary probe"
+    },
+    {
+      "auth_requirement": "unknown",
+      "auto_dispatchable": false,
+      "category": "safety_boundary",
+      "gate_triggers": [
+        "state change",
+        "destructive action",
+        "concurrency/high load"
+      ],
+      "key": "state_changing_or_high_load",
+      "level": "L3_STATE_CHANGING",
+      "risk_class": "state_changing",
+      "safe_actions": [],
+      "signals": [
+        "mutation",
+        "delete",
+        "upload",
+        "purchase",
+        "concurrency",
+        "high_load"
+      ],
+      "summary": "Mutation, deletion, upload, purchase, workflow transition, concurrency, and load probes must not run automatically.",
+      "title": "State-changing, destructive, concurrent, or high-load probe"
+    }
+  ],
+  "note": "Planner metadata only; not an exploit or scanner algorithm.",
+  "schema": "generic_probe_families.v1"
+}

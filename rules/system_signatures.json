@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "labels": ["oa", "druid", "admin_portal", "vpn", "cms", "api_gateway", "login", "unknown"],
+  "rules": {
+    "oa": {
+      "priority": 90,
+      "positive": [
+        {"rule_id": "oa_title_vendor", "field": "title", "contains": ["e-cology", "ecology", "泛微", "致远", "用友", "oa系统"], "reason": "title names an OA product or vendor such as e-cology"},
+        {"rule_id": "oa_technology_vendor", "field": "technologies", "contains": ["e-cology", "ecology", "泛微", "seeyon", "致远", "用友oa"], "reason": "technology fingerprint names an OA product or vendor such as e-cology"},
+        {"rule_id": "oa_entry_path", "field": "urls", "contains": ["/ecology", "/seeyon", "/oa/"], "reason": "entry path is an OA-specific path"}
+      ],
+      "negative": []
+    },
+    "druid": {
+      "priority": 100,
+      "positive": [
+        {"rule_id": "druid_title", "field": "title", "contains": ["druid"], "reason": "title names Apache Druid"},
+        {"rule_id": "druid_technology", "field": "technologies", "contains": ["druid", "apache druid"], "reason": "technology fingerprint names Apache Druid"},
+        {"rule_id": "druid_entry_path", "field": "urls", "contains": ["/druid", "druid/index"], "reason": "entry path is a Druid console path"}
+      ],
+      "negative": []
+    },
+    "admin_portal": {
+      "priority": 70,
+      "positive": [
+        {"rule_id": "admin_title", "field": "title", "contains": ["admin", "administrator", "management console", "后台管理"], "reason": "title indicates an administration portal"},
+        {"rule_id": "admin_entry", "field": "entry_types", "contains": ["admin", "admin_portal"], "reason": "entry type indicates an administration portal"},
+        {"rule_id": "admin_path", "field": "urls", "contains": ["/admin", "/manager", "/console"], "reason": "entry path indicates an administration portal"}
+      ],
+      "negative": []
+    },
+    "vpn": {
+      "priority": 80,
+      "positive": [
+        {"rule_id": "vpn_title", "field": "title", "contains": ["vpn", "virtual private network", "ssl vpn"], "reason": "title indicates a VPN gateway"},
+        {"rule_id": "vpn_technology", "field": "technologies", "contains": ["vpn", "ssl vpn", "globalprotect", "anyconnect", "atrust"], "reason": "technology fingerprint indicates a VPN gateway"},
+        {"rule_id": "vpn_entry", "field": "entry_types", "contains": ["vpn"], "reason": "entry type indicates a VPN gateway"}
+      ],
+      "negative": []
+    },
+    "cms": {
+      "priority": 75,
+      "positive": [
+        {"rule_id": "cms_technology", "field": "technologies", "contains": ["wordpress", "drupal", "joomla", "dedecms", "thinkphp"], "reason": "technology fingerprint indicates a CMS"},
+        {"rule_id": "cms_entry_path", "field": "urls", "contains": ["/wp-login.php", "/wp-admin", "/user/login", "/administrator"], "reason": "entry path indicates a CMS login or administration surface"}
+      ],
+      "negative": []
+    },
+    "api_gateway": {
+      "priority": 85,
+      "positive": [
+        {"rule_id": "gateway_technology", "field": "technologies", "contains": ["kong", "apisix", "traefik", "nginx api gateway", "zuul"], "reason": "technology fingerprint indicates an API gateway"},
+        {"rule_id": "gateway_entry", "field": "entry_types", "contains": ["api_gateway", "gateway"], "reason": "entry type indicates an API gateway"},
+        {"rule_id": "gateway_path", "field": "urls", "contains": ["/api", "/graphql"], "reason": "entry path indicates an API surface"}
+      ],
+      "negative": []
+    },
+    "login": {
+      "priority": 50,
+      "positive": [
+        {"rule_id": "login_title", "field": "title", "contains": ["login", "log in", "sign in", "signin", "登录"], "reason": "title indicates a login page"},
+        {"rule_id": "login_entry", "field": "entry_types", "contains": ["login", "signin", "auth"], "reason": "entry type indicates a login page"},
+        {"rule_id": "login_path", "field": "urls", "contains": ["/login", "/signin", "/sign-in", "/auth"], "reason": "entry path indicates a login page"}
+      ],
+      "negative": []
+    }
+  }
+}
